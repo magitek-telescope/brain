@@ -37,6 +37,7 @@
 </head>
 <body>
   <textarea></textarea>
+  <script src="autosize.min.js"></script>
   <script>
     const $  = el => document.querySelector(el)
     const $$ = el => document.querySelectorAll(el)
@@ -48,6 +49,7 @@
     const autoSave = () => localStorage.setItem('brain_autosave', getText())
 
     setText()
+    autosize($$('textarea'))
     setInterval(autoSave, 1000)
     document.addEventListener('keydown', (e)=>{
       if(e.metaKey && e.key == 's'){
