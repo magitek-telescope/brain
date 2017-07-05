@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>-</title>
+  <style>
+  html,body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  textarea{
+    font-size: 24px;
+    font-family: YuMincho;
+    outline: none;
+    width: 800px;
+    height: calc(100vh - 40px);
+    margin: 20px auto;
+    padding: 0 calc(50vw - 400px);
+    border: 0;
+    resize: none;
+  }
+
+  a{
+    opacity: 0.0;
+    display: block;
+    width: 0;
+    height: 0;
+  }
+  </style>
+</head>
+<body>
+  <textarea></textarea>
+  <script>
+    const $  = el => document.querySelector(el)
+    const $$ = el => document.querySelectorAll(el)
+    const getText = () => $('textarea').value
+    const setText = () => {
+      $('textarea').value = localStorage.getItem('brain_autosave')
+      $('title').innerText = getText().split("\n")[0]
+    }
+    const autoSave = () => localStorage.setItem('brain_autosave', getText())
+
+    setText()
+    setInterval(autoSave, 1000)
+    document.addEventListener('keydown', (e)=>{
+      if(e.metaKey && e.key == 's'){
+        e.preventDefault()
+        const blob = new Blob([getText()], {type: 'text/plain'})
+        const a = document.createElement('a')
+        a.href = URL.createObjectURL(blob)
+        a.target = '_blank'
+        a.download = `${getText().split("\n")[0]}.txt`
+        a.click()
+      }
+    })
+  </script>
+</body>
+</html>
