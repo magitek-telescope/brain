@@ -55,14 +55,17 @@
     autosize($$('textarea'))
     setInterval(autoSave, 1000)
     document.addEventListener('keydown', (e)=>{
-      if(e.metaKey && e.key == 's'){
+      if((e.metaKey || e.getModifierState("OS")) && e.key == 's'){
         e.preventDefault()
         const blob = new Blob([getText()], {type: 'text/plain'})
         const a = document.createElement('a')
+        document.body.appendChild(a);
+        a.setAttribute("type", "hidden");
         a.href = URL.createObjectURL(blob)
         a.target = '_blank'
         a.download = `${getText().split("\n")[0]}.txt`
         a.click()
+        document.body.removeChild(a);
       }
     })
   </script>
